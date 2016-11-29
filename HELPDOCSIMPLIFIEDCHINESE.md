@@ -55,7 +55,69 @@ add_entry(TABLE_CNC_DOMAIN, "\x44\x57\x41\x49\x0C\x56\x4A\x47\x0C\x52\x4D\x4E\x4
 ```
 apt-get install mysql-server mysql-client
 ```
-CNC 需要安装数据库才能使用.然后用下面的命令初始化数据库:
+CNC 需要安装数据库才能使用, 使用以下命令:
+
+```
+# 从下载开始，所有运行都需要使用一个有权限的用户
+
+apt-get install gcc golang electric-fence
+
+mkdir /etc/xcompile
+cd /etc/xcompile
+
+wget https://www.uclibc.org/downloads/binaries/0.9.30.1/cross-compiler-armv4l.tar.bz2
+wget https://www.uclibc.org/downloads/binaries/0.9.30.1/cross-compiler-i586.tar.bz2
+wget https://www.uclibc.org/downloads/binaries/0.9.30.1/cross-compiler-m68k.tar.bz2
+wget https://www.uclibc.org/downloads/binaries/0.9.30.1/cross-compiler-mips.tar.bz2
+wget https://www.uclibc.org/downloads/binaries/0.9.30.1/cross-compiler-mipsel.tar.bz2
+wget https://www.uclibc.org/downloads/binaries/0.9.30.1/cross-compiler-powerpc.tar.bz2
+wget https://www.uclibc.org/downloads/binaries/0.9.30.1/cross-compiler-sh4.tar.bz2
+wget https://www.uclibc.org/downloads/binaries/0.9.30.1/cross-compiler-sparc.tar.bz2
+
+tar -jxf cross-compiler-armv4l.tar.bz2
+tar -jxf cross-compiler-i586.tar.bz2
+tar -jxf cross-compiler-m68k.tar.bz2
+tar -jxf cross-compiler-mips.tar.bz2
+tar -jxf cross-compiler-mipsel.tar.bz2
+tar -jxf cross-compiler-powerpc.tar.bz2
+tar -jxf cross-compiler-sh4.tar.bz2
+tar -jxf cross-compiler-sparc.tar.bz2
+
+rm *.tar.bz2
+mv cross-compiler-armv4l armv4l
+mv cross-compiler-i586 i586
+mv cross-compiler-m68k m68k
+mv cross-compiler-mips mips
+mv cross-compiler-mipsel mipsel
+mv cross-compiler-powerpc powerpc
+mv cross-compiler-sh4 sh4
+mv cross-compiler-sparc sparc
+
+-- END --
+
+# 设置命令到运行环境的配置文件里 ~/.bashrc
+
+# 交叉编译环境变量
+export PATH=$PATH:/etc/xcompile/armv4l/bin
+export PATH=$PATH:/etc/xcompile/armv6l/bin
+export PATH=$PATH:/etc/xcompile/i586/bin
+export PATH=$PATH:/etc/xcompile/m68k/bin
+export PATH=$PATH:/etc/xcompile/mips/bin
+export PATH=$PATH:/etc/xcompile/mipsel/bin
+export PATH=$PATH:/etc/xcompile/powerpc/bin
+export PATH=$PATH:/etc/xcompile/powerpc-440fp/bin
+export PATH=$PATH:/etc/xcompile/sh4/bin
+export PATH=$PATH:/etc/xcompile/sparc/bin
+
+# Golang 环境变量
+export PATH=$PATH:/usr/local/go/bin
+export GOPATH=$HOME/Documents/go
+
+-- END --
+```
+
+
+CNC 初始化数据库:
 
 表结构如下:
 CREATE DATABASE mirai;
